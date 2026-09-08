@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML to Markdown Converter</title>
+  <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      background-color: #f4f7f9;
+      margin: 0;
+      padding: 20px;
+    }
+    .tool-card {
+      max-width: 650px;
+      margin: 20px auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      border: 1px solid #e1e8ed;
+    }
+    .tool-header {
+      background-color: #1565c0;
+      color: #ffffff;
+      padding: 24px 20px;
+      text-align: center;
+    }
+    .tool-header h1 {
+      margin: 0 0 6px 0;
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .tool-header p {
+      margin: 0;
+      font-size: 13px;
+      opacity: 0.9;
+    }
+    .tool-body {
+      padding: 24px;
+    }
+    .step-group {
+      margin-bottom: 20px;
+    }
+    .step-label {
+      color: #1565c0;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 8px;
+      display: block;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 12px;
+      border: 1px solid #bce0fd;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: monospace;
+      outline: none;
+      transition: border-color 0.2s;
+      background-color: #fafcfe;
+      resize: vertical;
+    }
+    textarea:focus {
+      border-color: #1565c0;
+      background-color: #ffffff;
+    }
+    .btn-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .action-btn {
+      flex: 1;
+      background-color: #1565c0;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .action-btn:hover {
+      background-color: #0d47a1;
+    }
+    .clear-btn {
+      background-color: #e0e0e0;
+      color: #333;
+    }
+    .clear-btn:hover {
+      background-color: #d6d6d6;
+    }
+  </style>
+</head>
+<body>
+
+<div class="tool-card">
+  <div class="tool-header">
+    <h1>HTML to Markdown Converter</h1>
+    <p>Convert HTML Code into Clean Markdown Instantly</p>
+  </div>
+
+  <div class="tool-body">
+    
+    <div class="step-group">
+      <label class="step-label">1. Paste HTML Code</label>
+      <textarea id="htmlInput" placeholder="<h1>Hello World</h1>&#10;<p>Enter HTML code here...</p>"></textarea>
+    </div>
+
+    <div class="step-group">
+      <label class="step-label">2. Generated Markdown</label>
+      <textarea id="markdownOutput" placeholder="Converted Markdown will appear here..." readonly></textarea>
+    </div>
+
+    <div class="btn-container">
+      <button class="action-btn" onclick="convertHtml()">Convert Code</button>
+      <button class="action-btn" onclick="copyOutput()">Copy Markdown</button>
+      <button class="action-btn clear-btn" onclick="clearAll()">Clear</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function convertHtml() {
+    let input = document.getElementById('htmlInput').value;
+    if(!input.trim()) return;
+
+    // Smart logic to extract body content if full HTML document is provided
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(input, 'text/html');
+    
+    // If a body tag exists, use only its inner HTML to prevent styles/title from showing up
+    if (doc.body && doc.body.innerHTML.trim() !== '') {
+      input = doc.body.innerHTML;
+    }
+
+    const turndownService = new TurndownService();
+    const markdown = turndownService.turndown(input);
+    document.getElementById('markdownOutput').value = markdown;
+  }
+
+  function copyOutput() {
+    const output = document.getElementById('markdownOutput');
+    if (!output.value) return;
+    output.select();
+    document.execCommand('copy');
+    alert('Markdown copied to clipboard!');
+  }
+
+  function clearAll() {
+    document.getElementById('htmlInput').value = '';
+    document.getElementById('markdownOutput').value = '';
+  }
+</script>
+
+</body>
+</html>
