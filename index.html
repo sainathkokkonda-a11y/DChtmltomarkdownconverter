@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML to Markdown Converter</title>
+  <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="tool-card">
+  <div class="tool-header">
+    <h1>HTML to Markdown Converter</h1>
+    <p>Convert HTML Code into Clean Markdown Instantly</p>
+  </div>
+
+  <div class="tool-body">
+    
+    <div class="step-group">
+      <label class="step-label">1. Paste HTML Code</label>
+      <textarea id="htmlInput" placeholder="<h1>Hello World</h1>&#10;<p>Enter HTML code here...</p>"></textarea>
+    </div>
+
+    <div class="step-group">
+      <label class="step-label">2. Generated Markdown</label>
+      <textarea id="markdownOutput" placeholder="Converted Markdown will appear here..." readonly></textarea>
+    </div>
+
+    <div class="btn-container">
+      <button class="action-btn" onclick="convertHtml()">Convert Code</button>
+      <button class="action-btn" onclick="copyOutput()">Copy Markdown</button>
+      <button class="action-btn clear-btn" onclick="clearAll()">Clear</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
